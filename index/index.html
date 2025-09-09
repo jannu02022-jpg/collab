@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hot Wheels Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    header {
+      background-color: #ff3c3c;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+
+    .search-bar {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      width: calc(33.333% - 20px);
+      box-sizing: border-box;
+      padding: 15px;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .card img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    .card h3 {
+      margin: 10px 0 5px;
+    }
+
+    .card p {
+      margin: 5px 0;
+      color: #555;
+    }
+
+    @media (max-width: 768px) {
+      .card {
+        width: calc(50% - 20px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🔥 Hot Wheels Car Collection Dashboard</h1>
+  </header>
+
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search by name, year or series..." />
+    </div>
+
+    <div class="cards" id="carList">
+      <!-- Car cards will be dynamically injected here -->
+    </div>
+  </div>
+
+  <script>
+    const cars = [
+      {
+        name: "Twin Mill",
+        year: 1969,
+        series: "Original Sweet 16",
+        image: "https://i.imgur.com/dyH8VmH.png"
+      },
+      {
+        name: "Bone Shaker",
+        year: 2006,
+        series: "Hot Wheels Originals",
+        image: "https://i.imgur.com/x4vMRuY.png"
+      },
+      {
+        name: "Deora II",
+        year: 2000,
+        series: "First Editions",
+        image: "https://i.imgur.com/Xj60A9z.png"
+      },
+      {
+        name: "Ford Mustang GT",
+        year: 2018,
+        series: "HW Muscle Mania",
+        image: "https://i.imgur.com/UvZ7GWA.png"
+      },
+      {
+        name: "Tesla Cybertruck",
+        year: 2021,
+        series: "HW Green Speed",
+        image: "https://i.imgur.com/y0Skfyb.png"
+      },
+      {
+        name: "Batmobile",
+        year: 2015,
+        series: "Batman Series",
+        image: "https://i.imgur.com/NVLzAvz.png"
+      }
+    ];
+
+    const carList = document.getElementById('carList');
+    const searchInput = document.getElementById('searchInput');
+
+    function renderCars(filter = '') {
+      carList.innerHTML = '';
+
+      const filteredCars = cars.filter(car => {
+        const searchStr = filter.toLowerCase();
+        return (
+          car.name.toLowerCase().includes(searchStr) ||
+          car.series.toLowerCase().includes(searchStr) ||
+          car.year.toString().includes(searchStr)
+        );
+      });
+
+      if (filteredCars.length === 0) {
+        carList.innerHTML = `<p>No cars match your search.</p>`;
+        return;
+      }
+
+      filteredCars.forEach(car => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${car.image}" alt="${car.name}">
+          <h3>${car.name}</h3>
+          <p><strong>Year:</strong> ${car.year}</p>
+          <p><strong>Series:</strong> ${car.series}</p>
+        `;
+        carList.appendChild(card);
+      });
+    }
+
+    // Initial render
+    renderCars();
+
+    // Search event
+    searchInput.addEventListener('input', (e) => {
+      renderCars(e.target.value);
+    });
+  </script>
+
+</body>
+</html>
